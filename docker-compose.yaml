@@ -1,0 +1,32 @@
+version: '3.5'
+services:
+
+  database:
+    container_name: fms-coop-integrationtest-database
+    image: mysql:8.0
+    restart: unless-stopped
+    ports:
+      - "3308:3306"
+      - "3309:3306"
+    volumes:
+      - ./backend/server/src/test/resources/:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    command:
+      - --explicit-defaults-for-timestamp=OFF
+
+  localstack:
+    container_name: fms-coop-integrationtest-localstack
+    image: localstack/localstack:3.0.0
+    network_mode: bridge
+    ports:
+      - "4566:4566"
+    environment:
+      - AWS_DEFAULT_REGION=eu-central-1
+      - DEBUG=1
+      - EDGE_PORT=4566
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - SERVICES=sqs,sns,dynamodb,s3,cloudwatch
+      - SKIP_SSL_CERT_DOWNLOAD=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
