@@ -24,6 +24,8 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world!
 
+      - uses: ./.github/workflows/action
+
   subjob:
     uses: ./.github/workflows/blank2.yaml
 

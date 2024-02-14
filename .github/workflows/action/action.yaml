@@ -1,0 +1,11 @@
+name: My Badges
+inputs:
+  token:
+    description: Auth token
+    default: ${{ github.token }}
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        echo "Something" 
